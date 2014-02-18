@@ -23,9 +23,13 @@ type File struct {
 	Notes []Note
 }
 
+// Note: These are the different types of notes
 var TYPE_TODO string = "todo"
+var TYPE_NOTE string = "note"
+
 var Files []File
 
+// Note: This is the main func
 func main() {
 	handleFilesForDir(".")
 
@@ -39,7 +43,7 @@ func main() {
 	}
 }
 
-// TODO: Write Tests
+// TODO: Write Tests for todos
 func handleFilesForDir(basepath string) {
 	files, err := ioutil.ReadDir(basepath)
 
@@ -74,7 +78,7 @@ func searchForTodos(filepath string) File {
 	}
 
 	// Setup REGEXP
-	r, err := regexp.Compile("(?i:(#|//).*[^\"]todo:?[^\"])(.*)")
+	r, err := regexp.Compile("(?i:(#|//).*[^\"](note|todo):?[^\"])(.*)")
 	CheckErrF(err, "Invalid regexp")
 
 	// Open file for reading
@@ -94,10 +98,10 @@ func searchForTodos(filepath string) File {
 			}
 
 			if m := r.FindSubmatch(b); len(m) > 0 {
-				x := strings.TrimSpace(string(m[2]))
+				x := strings.TrimSpace(string(m[3]))
 
 				n := Note{
-					Type:    TYPE_TODO,
+					Type:    strings.ToLower(string(m[2])),
 					Message: x,
 					LineNum: read,
 				}
