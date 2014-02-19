@@ -71,14 +71,14 @@ func handleFilesForDir(basepath string) {
 	}
 }
 
-// Todo: Make usable with more then just "TODO"
+// Todo: Make usable with more then just "TODO" hmm
 func searchForTodos(filepath string) File {
 	file := File{
 		Name: filepath,
 	}
 
 	// Setup REGEXP
-	r, err := regexp.Compile("(?i:(#|//).*[^\"](note|todo):?[^\"])(.*)")
+	r, err := regexp.Compile("(?i:(#|//).*[^\"](note|todo):?[^\"])(.*[^[todo]|[note])")
 	CheckErrF(err, "Invalid regexp")
 
 	// Open file for reading
@@ -120,7 +120,7 @@ func pathToName(path string) string {
 	return chunks[len(chunks)-1]
 }
 
-// Todo Make similar function that doesn't exit
+// Todo Make similar function that doesn't exit okay?
 func CheckErrF(err error, msg string) {
 	if err != nil {
 		fmt.Println(msg, ":", err)
