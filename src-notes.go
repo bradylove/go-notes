@@ -59,19 +59,22 @@ func handleFilesForDir(basepath string) {
 
 			handleFilesForDir(fullPath)
 		} else {
-			r, err := regexp.Compile("go|rb|java|js|coffee|cc|cpp|h|cl|el|lisp|hs")
-			CheckErrF(err, "Invalid regexp")
+			f := searchForTodos(fullPath)
 
-			match := r.MatchString(x.Name())
-
-			if match {
-				f := searchForTodos(fullPath)
-
-				if len(f.Notes) > 0 {
-					Files = append(Files, f)
-				}
+			if len(f.Notes) > 0 {
+				Files = append(Files, f)
 			}
 		}
+	}
+}
+
+func extFromName(fName string) string {
+	chunks := strings.Split(fName, ".")
+
+	if len(chunks) > 1 {
+		return chunks[len(chunks)-1]
+	} else {
+		return ""
 	}
 }
 
@@ -81,8 +84,15 @@ func searchForTodos(filepath string) File {
 		Name: filepath,
 	}
 
+	ext := extFromName(file.Name)
+	cmt := Cmts[ext]
+
+	if cmt == "" {
+		return file
+	}
+
 	// Setup REGEXP
-	r, err := regexp.Compile("(?i:(#|//|;;|--).*[^\"](note|todo):?[^\"])(.*[^[todo]|[note])")
+	r, err := regexp.Compile("(?i)(.*" + cmt + "\\s)(note|todo):?[^\"](.*)")
 	CheckErrF(err, "Invalid regexp")
 
 	// Open file for reading
