@@ -1,0 +1,2 @@
+-- Note: This would be a haskell comment, i think?
+-- Todo: Add some fake haskell and more todos
