@@ -31,7 +31,22 @@ var Files []File
 
 // Note: This is the main func
 func main() {
-	handleFilesForDir(".")
+	var rootPath string
+
+	if len(os.Args) > 1 {
+		rootPath = os.Args[1]
+	}
+
+	if rootPath == "" {
+		rootPath = "."
+	}
+
+	if len(os.Args) > 1 && os.Args[1] == "--help" {
+		fmt.Println("Usage: src-notes: [directory]")
+		return
+	}
+
+	handleFilesForDir(rootPath)
 
 	// Todo Move to a easy to customize formatter
 	for _, x := range Files {
