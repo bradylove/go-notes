@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"github.com/jessevdk/go-flags"
 	"io"
 	"io/ioutil"
 	"os"
@@ -11,6 +12,13 @@ import (
 	"strconv"
 	"strings"
 )
+
+type Options struct {
+	ShowTodos  bool `short:"t" verbose:"todos" description:"Show todos"`
+	ShowNotes  bool `short:"n" verbose:"notes" description:"Show notes"`
+	ShowFixMes bool `short"f" verbose:"fixmes" description:"Show fixmes"`
+	ShowDups   bool `short"d" verbose:"dups" description:"Show dups (duplicates)"`
+}
 
 type Note struct {
 	Type    string
@@ -31,6 +39,12 @@ var Files []File
 
 // Note: This is the main func
 func main() {
+	flag.Parse()
+
+	FilterType = strings.ToLower(FilterType)
+
+	fmt.Println(FilterType)
+
 	var rootPath string
 
 	if len(os.Args) > 1 {
@@ -106,8 +120,9 @@ func searchForTodos(filepath string) File {
 		return file
 	}
 
-	// Setup REGEXP
-	r, err := regexp.Compile("(?i)(.*" + cmt + "\\s)(note|todo):?[^\"](.*)")
+	// Todo: Make regexp work with HTML
+	// Fixme: Make regexp more dynamic
+	r, err := regexp.Compile("(?i)(.*" + cmt + "\\s)(note|todo|fixme|dup):?[^\"](.*)")
 	CheckErrF(err, "Invalid regexp")
 
 	// Open file for reading
