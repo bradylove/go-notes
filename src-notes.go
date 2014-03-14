@@ -3,7 +3,7 @@ package main
 import (
 	"bufio"
 	"fmt"
-	"github.com/jessevdk/go-flags"
+	flag "github.com/ogier/pflag"
 	"io"
 	"io/ioutil"
 	"os"
@@ -12,13 +12,6 @@ import (
 	"strconv"
 	"strings"
 )
-
-type Options struct {
-	ShowTodos  bool `short:"t" verbose:"todos" description:"Show todos"`
-	ShowNotes  bool `short:"n" verbose:"notes" description:"Show notes"`
-	ShowFixMes bool `short"f" verbose:"fixmes" description:"Show fixmes"`
-	ShowDups   bool `short"d" verbose:"dups" description:"Show dups (duplicates)"`
-}
 
 type Note struct {
 	Type    string
@@ -34,16 +27,30 @@ type File struct {
 // Note: These are the different types of notes
 var TYPE_TODO string = "todo"
 var TYPE_NOTE string = "note"
+var TYPE_FIXME string = "fixme"
+var TYPE_DUP string = "dup"
 
 var Files []File
+
+var (
+	showTodos  bool
+	showNotes  bool
+	showFixmes bool
+	showDups   bool
+)
+
+func init() {
+	flag.BoolVarP(&showTodos, "todos", "t", false, "show todos")
+	flag.BoolVarP(&showNotes, "notes", "n", false, "show notes")
+	flag.BoolVarP(&showFixmes, "fixmes", "f", false, "show fixmes")
+	flag.BoolVarP(&showDups, "dups", "d", false, "show dups (duplicates)")
+}
 
 // Note: This is the main func
 func main() {
 	flag.Parse()
 
-	FilterType = strings.ToLower(FilterType)
-
-	fmt.Println(FilterType)
+	fmt.Println(showTodos)
 
 	var rootPath string
 
