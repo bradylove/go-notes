@@ -17,7 +17,7 @@ and Linux.
 ## Usage
 
 src-notes currently supports comments with "todo" and "note. Your notes should
-have the languages slingle line comment, then a space, then `Note:` or `Todo:`
+have the languages single line comment, then a space, then `Note:` or `Todo:`
 then a space then your comment. See example below.
 
     // Todo: This is a valid comment
