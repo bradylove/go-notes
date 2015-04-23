@@ -24,8 +24,9 @@ type File struct {
 }
 
 // Note: These are the different types of notes
-var TYPE_TODO string = "todo"
-var TYPE_NOTE string = "note"
+var TYPE_TODO  string = "todo"
+var TYPE_NOTE  string = "note"
+var TYPE_FIXME string = "fixme"
 
 var Files []File
 
@@ -107,7 +108,7 @@ func searchForTodos(filepath string) File {
 	}
 
 	// Setup REGEXP
-	r, err := regexp.Compile("(?i)(.*" + cmt + "\\s)(note|todo):?[^\"](.*)")
+	r, err := regexp.Compile("(?i)(.*" + cmt + "\\s)(fixme|note|todo):?[^\"](.*)")
 	CheckErrF(err, "Invalid regexp")
 
 	// Open file for reading
