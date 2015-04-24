@@ -54,7 +54,7 @@ func main() {
 		x.PrintNotes()
 	}
 }
-
+ // Todo let's use this for color output http://godoc.org/github.com/fatih/color#Color.SprintFunc
 func (f *File) PrintNotes() {
 	fmt.Println("\033[1m" + f.Name + "\033[0m")
 
