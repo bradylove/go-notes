@@ -10,6 +10,7 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
+        "github.com/fatih/color"
 )
 
 type Note struct {
