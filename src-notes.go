@@ -10,6 +10,7 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
+        "github.com/fatih/color"
 )
 
 type Note struct {
@@ -24,8 +25,9 @@ type File struct {
 }
 
 // Note: These are the different types of notes
-var TYPE_TODO string = "todo"
-var TYPE_NOTE string = "note"
+var TYPE_TODO  string = "todo"
+var TYPE_NOTE  string = "note"
+var TYPE_FIXME string = "fixme"
 
 var Files []File
 
@@ -53,7 +55,7 @@ func main() {
 		x.PrintNotes()
 	}
 }
-
+ // Todo let's use this for color output http://godoc.org/github.com/fatih/color#Color.SprintFunc
 func (f *File) PrintNotes() {
 	fmt.Println("\033[1m" + f.Name + "\033[0m")
 
@@ -107,7 +109,7 @@ func searchForTodos(filepath string) File {
 	}
 
 	// Setup REGEXP
-	r, err := regexp.Compile("(?i)(.*" + cmt + "\\s)(note|todo):?[^\"](.*)")
+	r, err := regexp.Compile("(?i)(.*" + cmt + "\\s)(fixme|note|todo):?[^\"](.*)")
 	CheckErrF(err, "Invalid regexp")
 
 	// Open file for reading
